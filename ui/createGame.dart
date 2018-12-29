@@ -162,18 +162,18 @@ class CreateGameState extends State<CreateGame> {
                     timeObj['min'] = int.parse(_timeMin);
                     timeObj['sec'] = int.parse(_timeSec);
 
-                    var team1Players = new List();
+                    var team1Players = {};
                     team1.forEach((f) {
                       if (f.text != '') {
                         debugPrint(f.text);
-                        team1Players.add(f.text);
+                        team1Players[f.text] = f.text;
                       }
                     });
-                    var team2Players = new List();
+                    var team2Players = {};
                     team2.forEach((f) {
                       if (f.text != '') {
                         debugPrint(f.text);
-                        team2Players.add(f.text);
+                        team2Players[f.text] = f.text;
                       }
                     });
 
@@ -196,12 +196,14 @@ class CreateGameState extends State<CreateGame> {
                     childObj['time'] = timeObj;
                     childObj['team1'] = team1Players;
                     childObj['team2'] = team2Players;
-                    childObj['characters'] = [];
-                    childObj['activePlayers'] = [];
+                    childObj['characters'] = {};
+                    childObj['activePlayers'] = {};
                     childObj['round1'] = round1;
                     childObj['round2'] = round2;
                     childObj['round3'] = round3;
                     childObj['host'] = "";
+                    childObj['currentTeam'] = 1;
+                    childObj['currentPlayer'] = "";
 
 
                     Firestore.instance
@@ -210,6 +212,7 @@ class CreateGameState extends State<CreateGame> {
                         .setData(new Map<String, dynamic>.from(childObj));
                     Utils.setGameName(gameNameController.text);
                     Utils.setGlobalHostToThisInstance();
+
                     Utils.navigate(context, SetLocalHost());
                     //TODO pass to gameController, check before if empty
                   },

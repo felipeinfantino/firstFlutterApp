@@ -47,9 +47,17 @@ class SetLocalHostState extends State<SetLocalHost> {
             }
           }
       ),
-      floatingActionButton: selectedValue==null ? new Container() : new FloatingActionButton(child: new Icon(Icons.arrow_forward),onPressed: () {
+      floatingActionButton: selectedValue==null ? new Container() : new FloatingActionButton(child: new Icon(Icons.arrow_forward),onPressed: () async {
         if(Utils.isHost()){
-          Utils.setGlobalHost(selectedValue);
+          var hostObj = {};
+          hostObj['host'] = selectedValue;
+          var a = Map<String,dynamic>.from(hostObj);
+          String b = Utils.getGameName();
+          Firestore.instance
+              .collection("games")
+              .document(b)
+              .updateData(a);
+
         }
         Utils.setLocalHost(selectedValue);
         Utils.navigate(context, AddCharacters());
@@ -59,11 +67,18 @@ class SetLocalHostState extends State<SetLocalHost> {
 
 
   List<Widget> _getData(AsyncSnapshot snapshot) {
-
     List<Widget> widgetsToReturn = new List();
     List<String> allPlayers = new List();
-    allPlayers.addAll(List<String>.from(snapshot.data['team1']));
-    allPlayers.addAll(List<String>.from(snapshot.data['team2']));
+    print(snapshot.data['team1'].values);
+    List<dynamic> team1Dyn = List<dynamic>.from(snapshot.data['team1'].values);
+    List<String> team1 = List<String>.from(team1Dyn);
+    allPlayers.addAll(team1);
+    List<dynamic> team2Dyn = List<dynamic>.from(snapshot.data['team2'].values);
+    List<String> team2 = List<String>.from(team2Dyn);
+    allPlayers.addAll(team2);
+
+    /*allPlayers.addAll(List<String>.from(snapshot.data['team1'].values));
+    allPlayers.addAll(List<String>.from(snapshot.data['team2'].values));*/
     for (String i in allPlayers) {
       Row row = new Row(
         children: <Widget>[

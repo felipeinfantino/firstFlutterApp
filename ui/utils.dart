@@ -5,7 +5,7 @@ class Utils {
 
   static List<String> _charachters = new List();
 
-  static bool _host;
+  static bool _host = false;
 
   static String _gameName;
 
@@ -28,9 +28,6 @@ class Utils {
     _host = true;
   }
 
-  static setGlobalHost(String globalHost){
-    _globalHost = globalHost;
-  }
 
   static isHost(){
     return _host;
@@ -73,5 +70,9 @@ class Utils {
 
   static void setLocalHost(String localhost) {
     _localhost = localhost;
+  }
+
+  static String getLocalHost(){
+    return _localhost;
   }
 }
